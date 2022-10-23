@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:time_tracker/services/Auth.dart';
+import 'package:provider/provider.dart';
+import 'package:time_tracker/services/auth.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key, required this.auth});
-  final AuthBase auth;
+  const HomePage({super.key});
 
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     try {
+      final auth = Provider.of<AuthBase>(context, listen: false);
+
       await auth.signOut();
     } catch (e) {
       print(e.toString());
@@ -17,7 +19,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: signOut,
+        onPressed: () => signOut(context),
       ),
     );
   }
