@@ -1,12 +1,53 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker/app/sign_in/email_sign_in_page.dart';
 import 'package:time_tracker/app/sign_in/sign_in_button.dart';
 import 'package:time_tracker/app/sign_in/social_sign_in_button.dart';
+import 'package:time_tracker/common_widgets/platform_exception_alert_dialog.dart';
 import 'package:time_tracker/services/auth.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
+
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  bool _isLoading = false;
+  void _showSignInError(BuildContext context, FirebaseAuthException exception) {
+    PlatformExceptionAlertDialog(
+      title: 'Sign in failed',
+      exception: exception,
+    ).show(context);
+  }
+
+  Future<void> _signInAnonymously(BuildContext context) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      final auth = Provider.of<AuthBase>(context, listen: false);
+
+      await auth.signInAnonymously();
+    } on FirebaseAuthException catch (e) {
+      _showSignInError(context, e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  void _signInWithEmail(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (context) => const EmailSignInPage(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +58,6 @@ class SignInPage extends StatelessWidget {
       ),
       body: _buildContent(context),
       backgroundColor: Colors.grey[200],
-    );
-  }
-
-  Future<void> _signInAnonymously(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-
-      await auth.signInAnonymously();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  void signInWithEmail(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const EmailSignInPage(),
-      ),
     );
   }
 
@@ -55,7 +78,7 @@ class SignInPage extends StatelessWidget {
             text: 'Sign in with Google',
             textColor: Colors.black87,
             color: Colors.white,
-            onPressed: () {},
+            onPressed: _isLoading ? null : () {},
           ),
           const SizedBox(height: 8.0),
           SocialSignInButton(
@@ -63,14 +86,14 @@ class SignInPage extends StatelessWidget {
             text: 'Sign in with Facebook',
             textColor: Colors.white,
             color: const Color(0xFF334D92),
-            onPressed: () {},
+            onPressed: _isLoading ? null : () {},
           ),
           const SizedBox(height: 8.0),
           SignInButton(
             text: 'Sign in with email',
             textColor: Colors.white,
             color: const Color.fromARGB(255, 0, 121, 107),
-            onPressed: () => signInWithEmail(context),
+            onPressed: _isLoading ? null : () => _signInWithEmail(context),
           ),
           const SizedBox(height: 8.0),
           const Text(
@@ -82,8 +105,8 @@ class SignInPage extends StatelessWidget {
           SignInButton(
             text: 'Go anonymous',
             textColor: Colors.black,
-            color: const Color.fromARGB(255, 221, 232, 118),
-            onPressed: () => _signInAnonymously(context),
+            color: const Color.fromARGB(255, 220, 231, 117),
+            onPressed: _isLoading ? null : () => _signInAnonymously(context),
           ),
         ],
       ),
@@ -91,6 +114,11 @@ class SignInPage extends StatelessWidget {
   }
 
   Widget _buildHeader() {
+    if (_isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return const Text(
       'Sign in',
       textAlign: TextAlign.center,

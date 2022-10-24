@@ -15,6 +15,6 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
 
   static final Map<String, String> _errors = {
     'wrong-password': 'The password is invalid',
-    'permission-denied': 'Missing or insufficient premission',
+    'permission-denied': 'Missing or insufficient permission',
   };
 }
