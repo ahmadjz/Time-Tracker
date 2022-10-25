@@ -10,11 +10,14 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
           defaultActionText: 'OK',
         );
   static String _message(FirebaseException exception) {
+    print(exception);
+    print(exception.code);
     return _errors[exception.code].toString();
   }
 
   static final Map<String, String> _errors = {
     'wrong-password': 'The password is invalid',
+    'invalid-email': 'The email is invalid',
     'permission-denied': 'Missing or insufficient permission',
   };
 }
