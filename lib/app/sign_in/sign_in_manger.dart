@@ -7,7 +7,6 @@ class SignInManger {
   SignInManger({required this.isLoading, required this.auth});
 
   final AuthBase auth;
-  final StreamController<bool> _isLoadingController = StreamController<bool>();
   final ValueNotifier<bool> isLoading;
 
   Future<UserModel?> _signIn(Future<UserModel?> Function() signInMethod) async {
