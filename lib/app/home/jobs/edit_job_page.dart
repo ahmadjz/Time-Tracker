@@ -76,6 +76,7 @@ class _EditJobPageState extends State<EditJobPage> {
           allNames.remove(widget.job!.name);
         }
         if (allNames.contains(_name)) {
+          if (!mounted) return;
           const PlatformAlertDialog(
             title: 'Name already used',
             content: 'Please choose a different job name',
@@ -85,6 +86,7 @@ class _EditJobPageState extends State<EditJobPage> {
           final id = widget.job?.id ?? documentIdFromCurrentDate();
           final job = Job(id: id, name: _name!, ratePerHour: _ratePerHour!);
           await widget.database.setJob(job);
+          if (!mounted) return;
           Navigator.of(context).pop();
         }
       } on FirebaseAuthException catch (e) {

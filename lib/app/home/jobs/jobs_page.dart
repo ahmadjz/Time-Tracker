@@ -22,7 +22,8 @@ class JobsPage extends StatelessWidget {
     }
   }
 
-  Future<void> _confirmSignOut(BuildContext context) async {
+  Future<void> _confirmSignOut(BuildContext context,
+      [bool mounted = true]) async {
     final didRequestSignOut = await const PlatformAlertDialog(
       title: 'Logout',
       content: 'Are you sure that you want to logout?',
@@ -30,6 +31,7 @@ class JobsPage extends StatelessWidget {
       defaultActionText: 'Logout',
     ).show(context);
     if (didRequestSignOut == true) {
+      if (!mounted) return;
       _signOut(context);
     }
   }
