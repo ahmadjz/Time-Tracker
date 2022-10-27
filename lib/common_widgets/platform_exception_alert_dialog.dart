@@ -10,7 +10,9 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
           defaultActionText: 'OK',
         );
   static String _message(FirebaseException exception) {
+    print("exception");
     print(exception);
+    print("exception.code");
     print(exception.code);
     return _errors[exception.code].toString();
   }
