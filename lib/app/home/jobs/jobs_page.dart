@@ -5,37 +5,12 @@ import 'package:time_tracker/app/home/job_entries/job_entries_page.dart';
 import 'package:time_tracker/app/home/jobs/edit_job_page.dart';
 import 'package:time_tracker/app/home/jobs/job_list_tile.dart';
 import 'package:time_tracker/app/home/models/job.dart';
-import 'package:time_tracker/common_widgets/platform_alert_dialog.dart';
 import 'package:time_tracker/common_widgets/platform_exception_alert_dialog.dart';
-import 'package:time_tracker/services/auth.dart';
 import 'package:time_tracker/app/home/jobs/list_items_builder.dart';
 import 'package:time_tracker/services/database.dart';
 
 class JobsPage extends StatelessWidget {
   const JobsPage({super.key});
-
-  Future<void> _signOut(BuildContext context) async {
-    try {
-      final auth = Provider.of<AuthBase>(context);
-      await auth.signOut();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context,
-      [bool mounted = true]) async {
-    final didRequestSignOut = await const PlatformAlertDialog(
-      title: 'Logout',
-      content: 'Are you sure that you want to logout?',
-      cancelActionText: 'Cancel',
-      defaultActionText: 'Logout',
-    ).show(context);
-    if (didRequestSignOut == true) {
-      if (!mounted) return;
-      _signOut(context);
-    }
-  }
 
   Future<void> _delete(BuildContext context, Job job) async {
     try {
@@ -55,23 +30,14 @@ class JobsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jobs'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-              ),
-            ),
-            onPressed: () => _confirmSignOut(context),
-          ),
-        ],
       ),
       body: _buildContent(context),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => EditJobPage.show(context, database: database),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 60),
+        child: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () => EditJobPage.show(context, database: database),
+        ),
       ),
     );
   }
