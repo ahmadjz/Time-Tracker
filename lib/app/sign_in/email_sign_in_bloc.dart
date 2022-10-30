@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:rxdart/rxdart.dart';
 import 'package:time_tracker/app/sign_in/email_sign_in_model.dart';
 import 'package:time_tracker/services/auth.dart';
 
@@ -7,14 +8,16 @@ class EmailSignInBloc {
   EmailSignInBloc({required this.auth});
 
   final AuthBase auth;
-  final StreamController<EmailSignInModel> _modelController =
-      StreamController();
 
-  Stream<EmailSignInModel> get modelStream => _modelController.stream;
-  EmailSignInModel _model = EmailSignInModel();
+  final _modelSubject = BehaviorSubject<EmailSignInModel>.seeded(
+      EmailSignInModel()); // seeded is for initial value
+
+  Stream<EmailSignInModel> get modelStream => _modelSubject.stream;
+  // EmailSignInModel _model = EmailSignInModel(); // we don't need to keep track of data locally
+  EmailSignInModel get _model => _modelSubject.value;
 
   void dispose() {
-    _modelController.close();
+    _modelSubject.close();
   }
 
   void updateWith(
@@ -24,14 +27,20 @@ class EmailSignInBloc {
       bool? isLoading,
       bool? submitted}) {
     // update model
-    _model = _model.copyWith(
+    _modelSubject.add(_model.copyWith(
         email: email,
         formType: formType,
         isLoading: isLoading,
         password: password,
-        submitted: submitted);
-    _modelController.add(_model);
-    // add updated model to _modelController
+        submitted: submitted));
+    // another syntax
+    // _modelSubject.value = _model.copyWith(
+    //   email: email,
+    //   password: password,
+    //   formType: formType,
+    //   isLoading: isLoading,
+    //   submitted: submitted,
+    // );
   }
 
   Future<void> submit() async {
