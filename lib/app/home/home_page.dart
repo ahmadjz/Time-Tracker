@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:time_tracker/app/home/account/account_page.dart';
+import 'package:time_tracker/app/home/entries/entries_page.dart';
 import 'package:time_tracker/app/home/jobs/jobs_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   List<Widget> _buildScreens() => [
         const JobsPage(),
-        const JobsPage(),
+        EntriesPage.create(context),
         const AccountPage(),
       ];
 

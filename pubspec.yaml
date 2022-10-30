@@ -39,6 +39,7 @@ dependencies:
   intl: ^0.17.0
   persistent_bottom_nav_bar: ^5.0.2
   provider: ^6.0.4
+  rxdart: ^0.27.5
 
 dev_dependencies:
   flutter_lints: ^2.0.0
