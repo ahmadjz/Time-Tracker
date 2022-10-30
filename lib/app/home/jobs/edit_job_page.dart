@@ -16,7 +16,7 @@ class EditJobPage extends StatefulWidget {
       {required Database database, Job? job}) async {
     await Navigator.of(
       context,
-      rootNavigator: true,
+      rootNavigator: true, // to not show the bottom navigation bar
     ).push(
       MaterialPageRoute(
         builder: (context) => EditJobPage(

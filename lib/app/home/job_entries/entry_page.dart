@@ -21,7 +21,7 @@ class EntryPage extends StatefulWidget {
       Entry? entry}) async {
     await Navigator.of(
       context!,
-      rootNavigator: true,
+      rootNavigator: true, // to not show the bottom navigation bar
     ).push(
       MaterialPageRoute(
         builder: (context) =>
