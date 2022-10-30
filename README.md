@@ -3,10 +3,10 @@ Time Tracker application built with Flutter & Firebase.
 
 ### Features
 
-- Multiple authentacation methods.
+- Multiple authentication methods.
 - You can add jobs and a rate per hour for it.
 - Each job can have multiple entries.
-- Entries page that shows all the jobs with all it's entries sorted by date.
+- Entries page that shows all the jobs with all their entries sorted by date.
 - All features are presented with streams for real-time updating.
 
 ### Technologies
