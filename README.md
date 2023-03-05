@@ -1,5 +1,5 @@
 # Time Tracker
-Time Tracker application built with Flutter & Firebase.
+A Flutter-based Time Tracker app that uses Firebase as a backend. It allows users to sign in with Facebook, Google or email and password, and to create and manage multiple entities with different entries. Users can also view, edit or delete their entries in a comprehensive dashboard.
 
 ### Features
 
